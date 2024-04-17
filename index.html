@@ -203,7 +203,8 @@ for db, sc in tqdm(rows):
     print(f&quot;SELECT pg_total_relation_size(&#39;&#123;db&#125;.&#123;sc&#125;&#39;)&quot;)
     size = cursor.fetchall()
     with open(&quot;./out.txt&quot;, &quot;a&quot;) as f:
-        f.write(f&quot;INSERT INTO analyze_dataset VALUES (&#39;urn:li:dataset:(urn:li:dataPlatform:postgres,&#123;dbname&#125;.&#123;db&#125;.&#123;sc&#125;,PROD)&#39;, &#123;rows[0][0]&#125;, &#123;size[0][0]&#125;);\n&quot;)
+        f.write(f&quot;INSERT INTO analyze_dataset VALUES (&#39;urn:li:dataset:(urn:li:dataPlatform:postgres,&#123;dbname&#125;.&#123;db&#125;.
+                &#123;sc&#125;,PROD)&#39;, &#123;rows[0][0]&#125;, &#123;size[0][0]&#125;);\n&quot;)
 </code></pre>
 <p>可以实现获取所有表的特定信息，但是由于数据量过大，统计时会耗费极长的时间，所以建议数据量不是特别大的时候采用。</p>
 <p>2.优化上述方法，更换时实现方式。</p>
@@ -213,13 +214,16 @@ ANALYZE TABLE;
 <p>建议定时分析更新</p>
 <pre><code class="python">//使用下述方式之前需要完成postgre库的数据表分析
 
-cursor.execute(&quot;SELECT schemaname || &#39;.&#39; || relname AS full_table_name,n_live_tup AS row_count,pg_total_relation_size(relid) AS total_size_bytes FROM pg_stat_user_tables ORDER BY full_table_name&quot;)
+cursor.execute(&quot;SELECT schemaname || &#39;.&#39; || relname AS full_table_name,n_live_tup AS 
+               row_count,pg_total_relation_size(relid) AS total_size_bytes FROM pg_stat_user_tables ORDER BY 
+               full_table_name&quot;)
 
 # 获取查询结果
 rows = cursor.fetchall()
 for sc, rows, size in tqdm(rows):
     with open(&quot;./out.txt&quot;, &quot;a&quot;) as f:
-        f.write(f&quot;INSERT INTO analyze_dataset VALUES (&#39;urn:li:dataset:(urn:li:dataPlatform:postgres,&#123;dbname&#125;.&#123;sc&#125;,PROD)&#39;, &#123;rows&#125;, &#123;size&#125;, &#39;&#39;);\n&quot;)
+        f.write(f&quot;INSERT INTO analyze_dataset VALUES (&#39;urn:li:dataset:(urn:li:dataPlatform:postgres,&#123;dbname&#125;.
+                &#123;sc&#125;,PROD)&#39;, &#123;rows&#125;, &#123;size&#125;, &#39;&#39;);\n&quot;)
 
 # 关闭游标和连接
 cursor.close()
@@ -239,7 +243,7 @@ conn.close()
         
         <span class="tag">
             
-            <a href="/tags/database-postgre-bigdata/" style="color: #00a596">
+            <a href="/tags/database-postgre-bigdata/" style="color: #00bcd4">
                 database postgre   bigdata
             </a>
         </span>
@@ -283,7 +287,7 @@ conn.close()
         
         <span class="tag">
             
-            <a href="/tags/work/" style="color: #00bcd4">
+            <a href="/tags/work/" style="color: #ffa2c4">
                 work
             </a>
         </span>
