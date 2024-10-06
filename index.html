@@ -222,141 +222,20 @@
         
         <span class="tag">
             
-            <a href="/tags/%E9%9D%9E%E6%8A%80%E6%9C%AF/" style="color: #ffa2c4">
+            <a href="/tags/%E9%9D%9E%E6%8A%80%E6%9C%AF/" style="color: #00bcd4">
                 非技术
             </a>
         </span>
         
         <span class="tag">
             
-            <a href="/tags/%E9%9A%8F%E7%AC%94/" style="color: #00bcd4">
+            <a href="/tags/%E9%9A%8F%E7%AC%94/" style="color: #ff7d73">
                 随笔
             </a>
         </span>
         
     </div>
     <a href="/2024/10/06/%E8%AE%A4%E7%9C%9F%E7%9A%84%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D/" class="go-post">阅读全文</a>
-</div>
-
-<div class="post">
-    <a href="/2024/05/16/%E5%85%B3%E4%BA%8E%E6%95%B0%E6%8D%AE%E9%97%A8%E6%88%B7%E5%B1%95%E7%A4%BA%E6%95%B0%E6%8D%AE%E4%B8%ADETL%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/">
-        <h2 class="post-title">关于数据门户展示数据中ETL遇到的问题</h2>
-    </a>
-    <div class="category-and-date">
-        
-        <span class="date">
-            <span class="icon">
-                <i class="fa-solid fa-calendar fa-fw"></i>
-            </span>
-            2024/5/16
-        </span>
-        
-        
-    </div>
-    <div class="description">
-        <div class="content" v-pre>
-            
-            <h4 id="背景："><a href="#背景：" class="headerlink" title="背景："></a>背景：</h4><p>​    前段时间接了个需求，统计所有数据库的数据量信息，主要是行数和字节数，虽然做起来很简单，但是真的很坑人。</p>
-<h4 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h4><p>1.第一次实现的方式采用的是使用airflow的工作流来实现，奈何版本太低，最后不得不放弃。</p>
-<p>2.第二次则是选择etl</p>
-
-            
-        </div>
-    </div>
-    <div class="post-tags">
-        
-        <span class="icon">
-            <i class="fa-solid fa-tags fa-fw"></i>
-        </span>
-        
-        
-        <span class="tag">
-            
-            <a href="/tags/bigdata-ETL-Postgre-Oracle-Scal/" style="color: #03a9f4">
-                bigdata ETL Postgre Oracle Scal
-            </a>
-        </span>
-        
-    </div>
-    <a href="/2024/05/16/%E5%85%B3%E4%BA%8E%E6%95%B0%E6%8D%AE%E9%97%A8%E6%88%B7%E5%B1%95%E7%A4%BA%E6%95%B0%E6%8D%AE%E4%B8%ADETL%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/" class="go-post">阅读全文</a>
-</div>
-
-<div class="post">
-    <a href="/2024/04/17/%E8%AE%B0Postgres%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AD%9B%E9%80%89%E8%A1%A8%E4%BF%A1%E6%81%AF/">
-        <h2 class="post-title">记Postgres数据库筛选表信息-筛选数据库表数以及占用存储空间</h2>
-    </a>
-    <div class="category-and-date">
-        
-        <span class="date">
-            <span class="icon">
-                <i class="fa-solid fa-calendar fa-fw"></i>
-            </span>
-            2024/4/17
-        </span>
-        
-        
-    </div>
-    <div class="description">
-        <div class="content" v-pre>
-            
-            <p>1.采用反复查库的方法。</p>
-<pre><code class="python">cursor.execute(&quot;select schemaname, tablename from pg_catalog.pg_tables order by schemaname&quot;)
-# 获取查询结果
-rows = cursor.fetchall()
-flag = False
-for db, sc in tqdm(rows):
-    rows = cursor.fetchall()
-    cursor.execute(f&quot;SELECT pg_total_relation_size(&#39;&#123;db&#125;.&#123;sc&#125;&#39;)&quot;)
-    print(f&quot;SELECT pg_total_relation_size(&#39;&#123;db&#125;.&#123;sc&#125;&#39;)&quot;)
-    size = cursor.fetchall()
-    with open(&quot;./out.txt&quot;, &quot;a&quot;) as f:
-        f.write(f&quot;INSERT INTO analyze_dataset VALUES (&#39;urn:li:dataset:(urn:li:dataPlatform:postgres,&#123;dbname&#125;.&#123;db&#125;.
-                &#123;sc&#125;,PROD)&#39;, &#123;rows[0][0]&#125;, &#123;size[0][0]&#125;);\n&quot;)
-</code></pre>
-<p>可以实现获取所有表的特定信息，但是由于数据量过大，统计时会耗费极长的时间，所以建议数据量不是特别大的时候采用。</p>
-<p>2.优化上述方法，更换时实现方式。</p>
-<pre><code class="sql">ANALYZE;
-ANALYZE TABLE;
-</code></pre>
-<p>建议定时分析更新</p>
-<pre><code class="python">//使用下述方式之前需要完成postgre库的数据表分析
-
-cursor.execute(&quot;SELECT schemaname || &#39;.&#39; || relname AS full_table_name,n_live_tup AS 
-               row_count,pg_total_relation_size(relid) AS total_size_bytes FROM pg_stat_user_tables ORDER BY 
-               full_table_name&quot;)
-
-# 获取查询结果
-rows = cursor.fetchall()
-for sc, rows, size in tqdm(rows):
-    with open(&quot;./out.txt&quot;, &quot;a&quot;) as f:
-        f.write(f&quot;INSERT INTO analyze_dataset VALUES (&#39;urn:li:dataset:(urn:li:dataPlatform:postgres,&#123;dbname&#125;.
-                &#123;sc&#125;,PROD)&#39;, &#123;rows&#125;, &#123;size&#125;, &#39;&#39;);\n&quot;)
-
-# 关闭游标和连接
-cursor.close()
-conn.close()
-</code></pre>
-<p>PS.后续更新前置信息，补全一下流程</p>
-
-            
-        </div>
-    </div>
-    <div class="post-tags">
-        
-        <span class="icon">
-            <i class="fa-solid fa-tags fa-fw"></i>
-        </span>
-        
-        
-        <span class="tag">
-            
-            <a href="/tags/database-postgre-bigdata/" style="color: #ff7d73">
-                database postgre   bigdata
-            </a>
-        </span>
-        
-    </div>
-    <a href="/2024/04/17/%E8%AE%B0Postgres%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AD%9B%E9%80%89%E8%A1%A8%E4%BF%A1%E6%81%AF/" class="go-post">阅读全文</a>
 </div>
 
 
