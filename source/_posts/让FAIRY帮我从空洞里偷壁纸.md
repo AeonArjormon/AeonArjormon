@@ -45,14 +45,9 @@ tags:
 
 ![凯撒 - 丽都放大镜](/images/wallpaper/magnifier_kaisha.jpg)
 
-这三个页面都走同一个 API 接口：
+这三个页面都走同一个 API 接口——米游社 Wiki 的 `entry_page` 查询接口，通过不同的 `entry_page_id` 参数区分不同的壁纸合集。返回的 JSON 数据里，`data.page.modules` 包含了所有壁纸的名称和图片 CDN 地址，解析起来非常直接。
 
-```
-https://act-api-takumi-static.mihoyo.com/hoyowiki/zzz/wapi/entry_page
-    ?app_sn=zzz_wiki&entry_page_id={page_id}&lang=zh-cn
-```
-
-不同的 `entry_page_id` 对应不同的壁纸合集。返回的 JSON 里 `data.page.modules` 包含了所有壁纸的名称和图片 CDN 地址，解析起来非常直接。
+找这个接口的过程也值得一提：打开米游社 Wiki 页面后，用浏览器的开发者工具（Network 面板）观察页面加载时的 XHR 请求，很容易就能定位到壁纸数据的来源。这类官方 Wiki 页面通常不会做数据混淆，接口结构很清晰。
 
 ## 脚本设计：增量更新 + 优雅降级
 
@@ -60,19 +55,7 @@ Python 脚本的核心逻辑很朴素，但有几个我觉得值得说的设计�
 
 ### 增量下载
 
-每次运行先扫描本地目录，拿已有文件名和 API 返回的壁纸名称做差集，只下载新增的。避免重复请求，也避免覆盖已有文件。
-
-```python
-existing = set()
-for f in os.listdir(save_dir):
-    if f.endswith((".png", ".jpg", ".jpeg", ".webp")):
-        existing.add(os.path.splitext(f)[0])
-
-for wp in wallpapers:
-    if wp["name"] in existing:
-        continue
-    download_direct(wp["url"], os.path.join(save_dir, filename))
-```
+每次运行先扫描本地目录，拿已有文件名和 API 返回的壁纸名称做差集，只下载新增的。避免重复请求，也避免覆盖已有文件。这个思路和数据开发里的 CDC（Change Data Capture）其实是一回事——只关心变化量，不关心全量。
 
 ### 网络策略：直连优先，代理兜底
 
@@ -82,21 +65,13 @@ for wp in wallpapers:
 2. 直连失败，自动检测 macOS 系统代理（HTTP / SOCKS），走代理重试
 3. 代理也失败，尝试切换其他可用代理
 
-图片下载则始终走直连，因为 CDN 本身不需要代理。
+图片下载则始终走直连，因为 CDN 本身不需要代理。这种"分级策略"在大数据开发里很常见——ETL 任务也会做类似的 source → fallback → degraded 链路设计。
 
 ### 离线降级
 
 如果 API 请求全部失败（比如网络环境太差），脚本会降级到内置的已知壁纸列表。这个列表是我手动维护的硬编码数据，覆盖了所有已发布壁纸的 CDN 地址。虽然不如 API 实时，但能保证脚本在任何网络环境下都能工作。
 
-```python
-KNOWN_MAGNIFIER_WALLPAPERS = [
-    {"name": "浅羽悠真", "url": "https://act-upload.mihoyo.com/..."},
-    {"name": "星见雅",   "url": "https://act-upload.mihoyo.com/..."},
-    # ... 23 个角色
-]
-```
-
-新增壁纸类型也很简单，脚本的任务注册是列表式的，加一个 `task_xxx` 函数然后注册到 `TASKS` 列表就行。
+新增壁纸类型也很简单——脚本的任务注册采用列表式设计，每种壁纸对应一个独立的 task 函数，注册到任务列表即可。扩展性很好，后续如果米游社新增壁纸合集类型，加一个 task 函数就行。
 
 ## Agent 调度：让 FAIRY 来值班
 
@@ -130,6 +105,8 @@ FAIRY 的 prompt 是这样定义的：
 
 如果抓到了手机版壁纸（方便直接传到手机），Agent 还会把图片单独发一条微信消息，直接长按保存就行。
 
+这里有个细节：报告末尾会附带一条来自"一言"API 的随机语录，FAIRY 会原样引用但不做额外评论。这个设计让每次通知都有点小惊喜，又不会破坏 FAIRY 冷静的人设。
+
 ## 当前成果
 
 跑了一段时间，目前的壁纸库：
@@ -154,11 +131,11 @@ FAIRY 的 prompt 是这样定义的：
 
 核心就三样东西：
 
-1. **Python 脚本**：抓 API、做增量比对、下载文件。纯标准库，不需要装额外依赖
-2. **定时任务**：任何支持 cron 表达式的调度工具都行。我用 QoderWork 是因为它自带 Agent 能力，可以让 AI 写报告 + 推送通知
-3. **通知渠道**：微信、Telegram、邮件都行，看你习惯
+1. **一个抓取脚本**：语言不限，核心就是调 API → 解析 JSON → 增量下载。Python 标准库就能搞定，不需要额外依赖
+2. **一个定时调度器**：任何支持 cron 表达式的工具都行。我用 QoderWork 是因为它自带 Agent 能力，可以让 AI 用人设写报告 + 推送通知，省去了单独搭通知管道的麻烦
+3. **一个通知渠道**：微信、Telegram、邮件都行，看你习惯
 
-脚本我已经开源在本地了（虽然代码风格比较"FAIRY"——冷静、精准、不废话）。如果感兴趣可以联系我拿一份。
+如果你对 Agent 调度和 FAIRY 人设 prompt 的设计感兴趣，可以在评论区聊聊，也可以直接看我的 [QoderWork Skill 分享](https://github.com/AeonArjormon)。
 
 ## 写在最后
 
