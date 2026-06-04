@@ -184,7 +184,7 @@
             
             <span class="tag">
                 
-                <a href="/AeonArjormon/tags/%E7%BB%9D%E5%8C%BA%E9%9B%B6/" style="color: #ffa2c4">
+                <a href="/AeonArjormon/tags/%E7%BB%9D%E5%8C%BA%E9%9B%B6/" style="color: #ff7d73">
                     绝区零
                 </a>
             </span>
@@ -205,14 +205,14 @@
             
             <span class="tag">
                 
-                <a href="/AeonArjormon/tags/Python/" style="color: #00a596">
+                <a href="/AeonArjormon/tags/Python/" style="color: #03a9f4">
                     Python
                 </a>
             </span>
             
             <span class="tag">
                 
-                <a href="/AeonArjormon/tags/%E5%A3%81%E7%BA%B8/" style="color: #03a9f4">
+                <a href="/AeonArjormon/tags/%E5%A3%81%E7%BA%B8/" style="color: #ffa2c4">
                     壁纸
                 </a>
             </span>
@@ -243,25 +243,19 @@
 <p><img src="/AeonArjormon/images/wallpaper/magnifier_xingjianya.jpg" alt="星见雅 - 丽都放大镜"></p>
 <p><img src="/AeonArjormon/images/wallpaper/magnifier_yuechengliu.jpg" alt="月城柳 - 丽都放大镜"></p>
 <p><img src="/AeonArjormon/images/wallpaper/magnifier_kaisha.jpg" alt="凯撒 - 丽都放大镜"></p>
-<p>这三个页面都走同一个 API 接口：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">https://act-api-takumi-static.mihoyo.com/hoyowiki/zzz/wapi/entry_page</span><br><span class="line">    ?app_sn=zzz_wiki&amp;entry_page_id=&#123;page_id&#125;&amp;lang=zh-cn</span><br></pre></td></tr></table></figure>
-
-<p>不同的 <code>entry_page_id</code> 对应不同的壁纸合集。返回的 JSON 里 <code>data.page.modules</code> 包含了所有壁纸的名称和图片 CDN 地址，解析起来非常直接。</p>
+<p>这三个页面都走同一个 API 接口——米游社 Wiki 的 <code>entry_page</code> 查询接口，通过不同的 <code>entry_page_id</code> 参数区分不同的壁纸合集。返回的 JSON 数据里，<code>data.page.modules</code> 包含了所有壁纸的名称和图片 CDN 地址，解析起来非常直接。</p>
+<p>找这个接口的过程也值得一提：打开米游社 Wiki 页面后，用浏览器的开发者工具（Network 面板）观察页面加载时的 XHR 请求，很容易就能定位到壁纸数据的来源。这类官方 Wiki 页面通常不会做数据混淆，接口结构很清晰。</p>
 <h2 id="脚本设计：增量更新-优雅降级"><a href="#脚本设计：增量更新-优雅降级" class="headerlink" title="脚本设计：增量更新 + 优雅降级"></a>脚本设计：增量更新 + 优雅降级</h2><p>Python 脚本的核心逻辑很朴素，但有几个我觉得值得说的设计：</p>
-<h3 id="增量下载"><a href="#增量下载" class="headerlink" title="增量下载"></a>增量下载</h3><p>每次运行先扫描本地目录，拿已有文件名和 API 返回的壁纸名称做差集，只下载新增的。避免重复请求，也避免覆盖已有文件。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">existing = <span class="built_in">set</span>()</span><br><span class="line"><span class="keyword">for</span> f <span class="keyword">in</span> os.listdir(save_dir):</span><br><span class="line">    <span class="keyword">if</span> f.endswith((<span class="string">&quot;.png&quot;</span>, <span class="string">&quot;.jpg&quot;</span>, <span class="string">&quot;.jpeg&quot;</span>, <span class="string">&quot;.webp&quot;</span>)):</span><br><span class="line">        existing.add(os.path.splitext(f)[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> wp <span class="keyword">in</span> wallpapers:</span><br><span class="line">    <span class="keyword">if</span> wp[<span class="string">&quot;name&quot;</span>] <span class="keyword">in</span> existing:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    download_direct(wp[<span class="string">&quot;url&quot;</span>], os.path.join(save_dir, filename))</span><br></pre></td></tr></table></figure>
-
+<h3 id="增量下载"><a href="#增量下载" class="headerlink" title="增量下载"></a>增量下载</h3><p>每次运行先扫描本地目录，拿已有文件名和 API 返回的壁纸名称做差集，只下载新增的。避免重复请求，也避免覆盖已有文件。这个思路和数据开发里的 CDC（Change Data Capture）其实是一回事——只关心变化量，不关心全量。</p>
 <h3 id="网络策略：直连优先，代理兜底"><a href="#网络策略：直连优先，代理兜底" class="headerlink" title="网络策略：直连优先，代理兜底"></a>网络策略：直连优先，代理兜底</h3><p>米游社的 API 走国内 CDN，大部分情况直连就行。但图片 CDN 偶尔会抽风，所以脚本做了一套三级网络策略：</p>
 <ol>
 <li>直连请求 API</li>
 <li>直连失败，自动检测 macOS 系统代理（HTTP &#x2F; SOCKS），走代理重试</li>
 <li>代理也失败，尝试切换其他可用代理</li>
 </ol>
-<p>图片下载则始终走直连，因为 CDN 本身不需要代理。</p>
+<p>图片下载则始终走直连，因为 CDN 本身不需要代理。这种”分级策略”在大数据开发里很常见——ETL 任务也会做类似的 source → fallback → degraded 链路设计。</p>
 <h3 id="离线降级"><a href="#离线降级" class="headerlink" title="离线降级"></a>离线降级</h3><p>如果 API 请求全部失败（比如网络环境太差），脚本会降级到内置的已知壁纸列表。这个列表是我手动维护的硬编码数据，覆盖了所有已发布壁纸的 CDN 地址。虽然不如 API 实时，但能保证脚本在任何网络环境下都能工作。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">KNOWN_MAGNIFIER_WALLPAPERS = [</span><br><span class="line">    &#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;浅羽悠真&quot;</span>, <span class="string">&quot;url&quot;</span>: <span class="string">&quot;https://act-upload.mihoyo.com/...&quot;</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;星见雅&quot;</span>,   <span class="string">&quot;url&quot;</span>: <span class="string">&quot;https://act-upload.mihoyo.com/...&quot;</span>&#125;,</span><br><span class="line">    <span class="comment"># ... 23 个角色</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-
-<p>新增壁纸类型也很简单，脚本的任务注册是列表式的，加一个 <code>task_xxx</code> 函数然后注册到 <code>TASKS</code> 列表就行。</p>
+<p>新增壁纸类型也很简单——脚本的任务注册采用列表式设计，每种壁纸对应一个独立的 task 函数，注册到任务列表即可。扩展性很好，后续如果米游社新增壁纸合集类型，加一个 task 函数就行。</p>
 <h2 id="Agent-调度：让-FAIRY-来值班"><a href="#Agent-调度：让-FAIRY-来值班" class="headerlink" title="Agent 调度：让 FAIRY 来值班"></a>Agent 调度：让 FAIRY 来值班</h2><p>脚本本身只是工具，真正让它”活”起来的是定时调度。</p>
 <p>我用 QoderWork 的定时任务功能，配了一条 cron 规则：每月 1 号上午 10:00 执行。Agent 收到指令后会：</p>
 <ol>
@@ -286,6 +280,7 @@
 <p>空洞平静如常，无需介入。(´・ω・&#96;)</p>
 </blockquote>
 <p>如果抓到了手机版壁纸（方便直接传到手机），Agent 还会把图片单独发一条微信消息，直接长按保存就行。</p>
+<p>这里有个细节：报告末尾会附带一条来自”一言”API 的随机语录，FAIRY 会原样引用但不做额外评论。这个设计让每次通知都有点小惊喜，又不会破坏 FAIRY 冷静的人设。</p>
 <h2 id="当前成果"><a href="#当前成果" class="headerlink" title="当前成果"></a>当前成果</h2><p>跑了一段时间，目前的壁纸库：</p>
 <ul>
 <li>丽都放大镜：24 张角色壁纸（全代理人收录）</li>
@@ -300,11 +295,11 @@
 <p><img src="/AeonArjormon/images/wallpaper/archive_tears.jpg" alt="将眼泪与过往一同埋葬 - 影像档案"></p>
 <h2 id="如果你想复刻"><a href="#如果你想复刻" class="headerlink" title="如果你想复刻"></a>如果你想复刻</h2><p>核心就三样东西：</p>
 <ol>
-<li><strong>Python 脚本</strong>：抓 API、做增量比对、下载文件。纯标准库，不需要装额外依赖</li>
-<li><strong>定时任务</strong>：任何支持 cron 表达式的调度工具都行。我用 QoderWork 是因为它自带 Agent 能力，可以让 AI 写报告 + 推送通知</li>
-<li><strong>通知渠道</strong>：微信、Telegram、邮件都行，看你习惯</li>
+<li><strong>一个抓取脚本</strong>：语言不限，核心就是调 API → 解析 JSON → 增量下载。Python 标准库就能搞定，不需要额外依赖</li>
+<li><strong>一个定时调度器</strong>：任何支持 cron 表达式的工具都行。我用 QoderWork 是因为它自带 Agent 能力，可以让 AI 用人设写报告 + 推送通知，省去了单独搭通知管道的麻烦</li>
+<li><strong>一个通知渠道</strong>：微信、Telegram、邮件都行，看你习惯</li>
 </ol>
-<p>脚本我已经开源在本地了（虽然代码风格比较”FAIRY”——冷静、精准、不废话）。如果感兴趣可以联系我拿一份。</p>
+<p>如果你对 Agent 调度和 FAIRY 人设 prompt 的设计感兴趣，可以在评论区聊聊，也可以直接看我的 <a target="_blank" rel="noopener" href="https://github.com/AeonArjormon">QoderWork Skill 分享</a>。</p>
 <h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>作为一个数据工程师，看到重复劳动就会手痒。抓壁纸这件事，手动做一次就够了，剩下的应该交给机器。</p>
 <p>而让 AI Agent 来干这个活，最大的乐趣不是省了多少时间，而是每个月收到一条 FAIRY 风格的推送时，那种”空洞里真的有人在帮我盯着”的感觉。</p>
 <p>行至苦难处，正是修行时。但收壁纸这种事，不必苦修。</p>
