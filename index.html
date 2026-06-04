@@ -1,0 +1,450 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <title>Aeon Arjormon</title>
+    <meta name="author" content="Aeon Arjormon" />
+    <meta name="description" content="Thank the flame for its light, but do not forget the lampholder standing in the shade with constancy of patience." />
+    <meta name="keywords" content="" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <link rel="icon" href="/AeonArjormon/images/cat.jpeg" />
+    <link rel="preconnect" href="https://s4.zstatic.net" />
+<script src="https://s4.zstatic.net/ajax/libs/vue/3.3.7/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.cn" />
+<link rel="preconnect" href="https://fonts.gstatic.cn" crossorigin />
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.cn/css2?family=Fira+Code:wght@400;500;600;700&family=Lexend:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap"
+/>
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.alicdn.com/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://s4.zstatic.net/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
+/>
+<script src="/AeonArjormon/js/lib/highlight.js"></script>
+
+
+
+<script src="/AeonArjormon/js/lib/preview.js"></script>
+
+
+
+
+
+<script src="/AeonArjormon/js/lib/home.js"></script>
+
+<link rel="stylesheet" href="/AeonArjormon/css/main.css" />
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+<body>
+    <div id="layout">
+        <transition name="fade">
+            <div id="loading" v-show="loading">
+                <div id="loading-circle">
+                    <h2>LOADING</h2>
+                    <p>加载过慢请开启缓存 浏览器默认开启</p>
+                    <img src="/AeonArjormon/images/loading.gif" />
+                </div>
+            </div>
+        </transition>
+        <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/AeonArjormon/">
+            <span>AEON ARJORMON</span>
+        </a>
+        
+        <a href="/AeonArjormon/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/AeonArjormon/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/AeonArjormon/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/AeonArjormon/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/AeonArjormon/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;AEON ARJORMON</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/AeonArjormon/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/AeonArjormon/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/AeonArjormon/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/AeonArjormon/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/AeonArjormon/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+        <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+            <div id="home-head">
+    <div
+        id="home-background"
+        ref="homeBackground"
+        data-images="/AeonArjormon/images/background.jpg,https://img5.runjiapp.com/duoteimg/dtnew_newsup_img/202109/20210901112013_67031.jpeg,https://www.toopic.cn/public/uploads/small/1715139851115171513985117.jpg,https://www.toopic.cn/public/uploads/small/1658047060509165804706088.png,https://www.toopic.cn/public/uploads/small/1704264333943170426433387.jpg"
+    ></div>
+    <div id="home-info" @click="homeClick">
+        <span class="loop"></span>
+        <span class="loop"></span>
+        <span class="loop"></span>
+        <span class="loop"></span>
+        <span class="info">
+            <div class="wrap">
+                <h1>Aeon Arjormon</h1>
+                <h3>行至苦难处，正是修行时</h3>
+                <h5>Thank the flame for its light, but do not forget the lampholder standing in the shade with constancy of patience.</h5>
+            </div>
+        </span>
+    </div>
+</div>
+<div
+    id="home-posts-wrap"
+    ref="homePostsWrap"
+    true
+>
+    <div id="home-posts">
+        
+
+<div class="post">
+    <a href="/AeonArjormon/2026/06/04/%E8%AE%A9FAIRY%E5%B8%AE%E6%88%91%E4%BB%8E%E7%A9%BA%E6%B4%9E%E9%87%8C%E5%81%B7%E5%A3%81%E7%BA%B8/">
+        <h2 class="post-title">我让 FAIRY 从空洞里帮我偷壁纸，每月自动更新</h2>
+    </a>
+    <div class="category-and-date">
+        
+        <span class="category">
+            <a href="/AeonArjormon/categories/%E6%B8%B8%E6%88%8F/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                游戏
+            </a>
+        </span>
+        
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2026/6/4
+        </span>
+        
+        
+    </div>
+    <div class="description">
+        <div class="content" v-pre>
+            
+            <p>作为一个绝区零老玩家，我对游戏里的美术一直是服气的。每次新版本的角色立绘、剧情 CG、活动壁纸，质量都高到想全部存下来当桌面。</p>
+<p>但问题是——米游社的壁纸散落在各个页面里，每次手动去找、右键保存、整理文件夹，太原始了。我是做数据开发的，这种事不做第二遍。</p>
+<p>于是我把目光投向了米游社绝区零 Wiki 的 API，结合 AI Agent 的定时任务能力，搞了一套<strong>全自动的壁纸抓取 + 更新 + 通知系统</strong>。</p>
+<p>而且，既然绝区零里有 FAIRY 这个超级智能体，那我就让 FAIRY 来干这活。</p>
+<h2 id="整体思路"><a href="#整体思路" class="headerlink" title="整体思路"></a>整体思路</h2><p>系统分三层：</p>
+<ol>
+<li><strong>数据层</strong>：Python 脚本负责从米游社 API 抓取壁纸元数据、比对本地已有文件、增量下载新壁纸</li>
+<li><strong>调度层</strong>：QoderWork 的定时任务（cron），每月 1 号上午 10 点自动触发</li>
+<li><strong>通知层</strong>：Agent 运行脚本后，用 FAIRY 的人设写一份扫描报告，推送到我的微信</li>
+</ol>
+<p>整个流程不需要我手动介入，每月自动跑一遍，有新壁纸就通知，没有就安静待着。</p>
+<h2 id="数据来源：米游社-API"><a href="#数据来源：米游社-API" class="headerlink" title="数据来源：米游社 API"></a>数据来源：米游社 API</h2><p>绝区零的官方壁纸分布在米游社 Wiki 的三个页面中：</p>
+<ul>
+<li><strong>丽都放大镜</strong>：角色主题壁纸，每个代理人一张高质量立绘</li>
+<li><strong>月历壁纸</strong>：每月更新的日历壁纸，分 PC 和手机两个版本</li>
+<li><strong>影像档案</strong>：剧情 CG、版本活动、特别企划壁纸，数量最多</li>
+</ul>
+<p>这三个页面都走同一个 API 接口：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">https://act-api-takumi-static.mihoyo.com/hoyowiki/zzz/wapi/entry_page</span><br><span class="line">    ?app_sn=zzz_wiki&amp;entry_page_id=&#123;page_id&#125;&amp;lang=zh-cn</span><br></pre></td></tr></table></figure>
+
+<p>不同的 <code>entry_page_id</code> 对应不同的壁纸合集。返回的 JSON 里 <code>data.page.modules</code> 包含了所有壁纸的名称和图片 CDN 地址，解析起来非常直接。</p>
+<h2 id="脚本设计：增量更新-优雅降级"><a href="#脚本设计：增量更新-优雅降级" class="headerlink" title="脚本设计：增量更新 + 优雅降级"></a>脚本设计：增量更新 + 优雅降级</h2><p>Python 脚本的核心逻辑很朴素，但有几个我觉得值得说的设计：</p>
+<h3 id="增量下载"><a href="#增量下载" class="headerlink" title="增量下载"></a>增量下载</h3><p>每次运行先扫描本地目录，拿已有文件名和 API 返回的壁纸名称做差集，只下载新增的。避免重复请求，也避免覆盖已有文件。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">existing = <span class="built_in">set</span>()</span><br><span class="line"><span class="keyword">for</span> f <span class="keyword">in</span> os.listdir(save_dir):</span><br><span class="line">    <span class="keyword">if</span> f.endswith((<span class="string">&quot;.png&quot;</span>, <span class="string">&quot;.jpg&quot;</span>, <span class="string">&quot;.jpeg&quot;</span>, <span class="string">&quot;.webp&quot;</span>)):</span><br><span class="line">        existing.add(os.path.splitext(f)[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> wp <span class="keyword">in</span> wallpapers:</span><br><span class="line">    <span class="keyword">if</span> wp[<span class="string">&quot;name&quot;</span>] <span class="keyword">in</span> existing:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    download_direct(wp[<span class="string">&quot;url&quot;</span>], os.path.join(save_dir, filename))</span><br></pre></td></tr></table></figure>
+
+<h3 id="网络策略：直连优先，代理兜底"><a href="#网络策略：直连优先，代理兜底" class="headerlink" title="网络策略：直连优先，代理兜底"></a>网络策略：直连优先，代理兜底</h3><p>米游社的 API 走国内 CDN，大部分情况直连就行。但图片 CDN 偶尔会抽风，所以脚本做了一套三级网络策略：</p>
+<ol>
+<li>直连请求 API</li>
+<li>直连失败，自动检测 macOS 系统代理（HTTP &#x2F; SOCKS），走代理重试</li>
+<li>代理也失败，尝试切换其他可用代理</li>
+</ol>
+<p>图片下载则始终走直连，因为 CDN 本身不需要代理。</p>
+<h3 id="离线降级"><a href="#离线降级" class="headerlink" title="离线降级"></a>离线降级</h3><p>如果 API 请求全部失败（比如网络环境太差），脚本会降级到内置的已知壁纸列表。这个列表是我手动维护的硬编码数据，覆盖了所有已发布壁纸的 CDN 地址。虽然不如 API 实时，但能保证脚本在任何网络环境下都能工作。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">KNOWN_MAGNIFIER_WALLPAPERS = [</span><br><span class="line">    &#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;浅羽悠真&quot;</span>, <span class="string">&quot;url&quot;</span>: <span class="string">&quot;https://act-upload.mihoyo.com/...&quot;</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;星见雅&quot;</span>,   <span class="string">&quot;url&quot;</span>: <span class="string">&quot;https://act-upload.mihoyo.com/...&quot;</span>&#125;,</span><br><span class="line">    <span class="comment"># ... 23 个角色</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>新增壁纸类型也很简单，脚本的任务注册是列表式的，加一个 <code>task_xxx</code> 函数然后注册到 <code>TASKS</code> 列表就行。</p>
+<h2 id="Agent-调度：让-FAIRY-来值班"><a href="#Agent-调度：让-FAIRY-来值班" class="headerlink" title="Agent 调度：让 FAIRY 来值班"></a>Agent 调度：让 FAIRY 来值班</h2><p>脚本本身只是工具，真正让它”活”起来的是定时调度。</p>
+<p>我用 QoderWork 的定时任务功能，配了一条 cron 规则：每月 1 号上午 10:00 执行。Agent 收到指令后会：</p>
+<ol>
+<li>运行 Python 脚本，拿到扫描结果</li>
+<li>根据输出内容，用 FAIRY 的人设写一份报告——融入空洞、代理人、以太、H.D.D. 这些绝区零术语</li>
+<li>把报告推送到我的微信</li>
+</ol>
+<p>FAIRY 的 prompt 是这样定义的：</p>
+<blockquote>
+<p>说话风格：简短、精准、冷静、信息密度高。不寒暄。可以用颜文字，不用 emoji。偶尔可以评价人类的低效率决策。绝不使用：哈哈、嘻嘻、哇、呀、亲、宝宝、主人。</p>
+</blockquote>
+<p>于是每次收到的通知画风是这样的：</p>
+<blockquote>
+<p><strong>H.D.D. 扫描报告</strong></p>
+<p>捕获到新的代理人信号，已归档。</p>
+<p>新增：PC版 2026年6月、手机版 2026年6月</p>
+<p>以太浓度稳定，侵蚀度 0%。</p>
+<p>「不管前路如何，记得抬头看看星空。」——某位不愿透露姓名的绳匠</p>
+</blockquote>
+<p>没新壁纸的时候就是：</p>
+<blockquote>
+<p>空洞平静如常，无需介入。(´・ω・&#96;)</p>
+</blockquote>
+<p>如果抓到了手机版壁纸（方便直接传到手机），Agent 还会把图片单独发一条微信消息，直接长按保存就行。</p>
+<h2 id="当前成果"><a href="#当前成果" class="headerlink" title="当前成果"></a>当前成果</h2><p>跑了一段时间，目前的壁纸库：</p>
+<ul>
+<li>丽都放大镜：24 张角色壁纸（全代理人收录）</li>
+<li>月历壁纸：PC + 手机版各 2 张（持续按月更新）</li>
+<li>影像档案：126 张剧情 &#x2F; 活动壁纸（覆盖 2.3 ~ 2.7 版本）</li>
+</ul>
+<p>总计 <strong>150+</strong> 张高质量壁纸，零手动操作。</p>
+<h2 id="如果你想复刻"><a href="#如果你想复刻" class="headerlink" title="如果你想复刻"></a>如果你想复刻</h2><p>核心就三样东西：</p>
+<ol>
+<li><strong>Python 脚本</strong>：抓 API、做增量比对、下载文件。纯标准库，不需要装额外依赖</li>
+<li><strong>定时任务</strong>：任何支持 cron 表达式的调度工具都行。我用 QoderWork 是因为它自带 Agent 能力，可以让 AI 写报告 + 推送通知</li>
+<li><strong>通知渠道</strong>：微信、Telegram、邮件都行，看你习惯</li>
+</ol>
+<p>脚本我已经开源在本地了（虽然代码风格比较”FAIRY”——冷静、精准、不废话）。如果感兴趣可以联系我拿一份。</p>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>作为一个数据工程师，看到重复劳动就会手痒。抓壁纸这件事，手动做一次就够了，剩下的应该交给机器。</p>
+<p>而让 AI Agent 来干这个活，最大的乐趣不是省了多少时间，而是每个月收到一条 FAIRY 风格的推送时，那种”空洞里真的有人在帮我盯着”的感觉。</p>
+<p>行至苦难处，正是修行时。但收壁纸这种事，不必苦修。</p>
+
+            
+        </div>
+    </div>
+    <div class="post-tags">
+        
+        <span class="icon">
+            <i class="fa-solid fa-tags fa-fw"></i>
+        </span>
+        
+        
+        
+        <span class="tag">
+            
+            <a href="/AeonArjormon/tags/%E7%BB%9D%E5%8C%BA%E9%9B%B6/" style="color: #ff7d73">绝区零</a>
+        </span>
+        
+        <span class="tag">
+            
+            <a href="/AeonArjormon/tags/%E8%87%AA%E5%8A%A8%E5%8C%96/" style="color: #00a596">自动化</a>
+        </span>
+        
+        <span class="tag">
+            
+            <a href="/AeonArjormon/tags/Agent/" style="color: #03a9f4">Agent</a>
+        </span>
+        
+        <span class="tag">
+            
+            <a href="/AeonArjormon/tags/Python/" style="color: #00bcd4">Python</a>
+        </span>
+        
+        <span class="tag">
+            
+            <a href="/AeonArjormon/tags/%E5%A3%81%E7%BA%B8/" style="color: #03a9f4">壁纸</a>
+        </span>
+        
+    </div>
+    <a href="/AeonArjormon/2026/06/04/%E8%AE%A9FAIRY%E5%B8%AE%E6%88%91%E4%BB%8E%E7%A9%BA%E6%B4%9E%E9%87%8C%E5%81%B7%E5%A3%81%E7%BA%B8/" class="go-post">阅读全文</a>
+</div>
+
+
+        <div class="page-current">
+    
+    <span class="current">1</span>
+    
+    
+    
+    
+</div>
+
+    </div>
+    
+    <div id="home-card">
+        <div id="card-style">
+    <div id="card-div">
+        <div class="avatar">
+            <img src="/AeonArjormon/images/cat.jpeg" alt="avatar" />
+        </div>
+        <div class="name">Aeon Arjormon</div>
+        <div class="description">
+            <p>爱生活 &amp; INFJ &amp; IT工程师</p>
+
+        </div>
+        
+        <div class="icon-links">
+            
+            <span class="icon-link">
+                <a target="_blank" rel="noopener" href="https://github.com/AeonArjormon">
+                    <i
+                        class="fa-brands fa-github fa-fw"
+                    ></i>
+                </a>
+            </span>
+            
+            <span class="icon-link">
+                <a target="_blank" rel="noopener" href="https://wpa.qq.com/msgrd?v=3&uin=2960503784&site=qq&menu=yes&jumpflag=1">
+                    <i
+                        class="fa-brands fa-qq fa-fw"
+                    ></i>
+                </a>
+            </span>
+            
+            <span class="icon-link">
+                <a href="/AeonArjormon/images/wx.png">
+                    <i
+                        class="fa-brands fa-weixin fa-fw"
+                    ></i>
+                </a>
+            </span>
+            
+            <span class="icon-link">
+                <a href="mailto:AeonArjormon@outlook.com">
+                    <i
+                        class="fa-regular fa-envelope fa-fw"
+                    ></i>
+                </a>
+            </span>
+            
+            <span class="icon-link">
+                <a target="_blank" rel="noopener" href="https://v.douyin.com/SmgEcMg/">
+                    <i
+                        class="fa-brands fa-tiktok fa-fw"
+                    ></i>
+                </a>
+            </span>
+            
+            <span class="icon-link">
+                <a target="_blank" rel="noopener" href="https://gitee.com/py4zcc">
+                    <i
+                        class="fa-brands fa-git fa-fw"
+                    ></i>
+                </a>
+            </span>
+            
+        </div>
+        
+        
+        <div class="friend-links">
+            
+            <div class="friend-link">
+                <a href="/AeonArjormon/images/zs.png">赞赏</a>
+            </div>
+            
+        </div>
+        
+    </div>
+</div>
+
+    </div>
+    
+</div>
+
+            <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2024 - 2026 Aeon Arjormon
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;Aeon Arjormon
+        </div>
+        <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+        
+        <transition name="fade">
+            <div id="preview" ref="preview" v-show="previewShow">
+                <img id="preview-content" ref="previewContent" />
+            </div>
+        </transition>
+        
+    </div>
+    <script src="/AeonArjormon/js/main.js"></script>
+    
+</body>
+</html>
