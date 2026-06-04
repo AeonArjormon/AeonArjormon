@@ -143,4 +143,10 @@ FAIRY 的 prompt 是这样定义的：
 
 ---
 
-本文提到的 AI Agent 定时任务功能来自 QoderWork，如果你也想试试用 Agent 搞自动化，可以通过我的邀请链接注册：[https://qoder.com.cn/referral?referral_code=7hQLd8CPYZYSfw8mxKoEaHhI58twrlWt](https://qoder.com.cn/referral?referral_code=7hQLd8CPYZYSfw8mxKoEaHhI58twrlWt)
+> **也想让 AI 帮你干活？**
+>
+> 本文中的定时调度 + FAIRY 人设通知，都来自 [QoderWork](https://qoder.com.cn) 的 Agent 能力。它不只是个聊天框——你可以给它写 Skill、配定时任务、接通知渠道，让 AI 真正成为你的自动化助手。
+>
+> 如果你也想试试，这是我的邀请链接，注册即可体验：
+>
+> **[点击注册 QoderWork](https://qoder.com.cn/referral?referral_code=7hQLd8CPYZYSfw8mxKoEaHhI58twrlWt)**
