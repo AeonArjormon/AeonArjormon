@@ -37,6 +37,14 @@ tags:
 - **月历壁纸**：每月更新的日历壁纸，分 PC 和手机两个版本
 - **影像档案**：剧情 CG、版本活动、特别企划壁纸，数量最多
 
+放几张收藏感受一下画质：
+
+![星见雅 - 丽都放大镜](/images/wallpaper/magnifier_xingjianya.jpg)
+
+![月城柳 - 丽都放大镜](/images/wallpaper/magnifier_yuechengliu.jpg)
+
+![凯撒 - 丽都放大镜](/images/wallpaper/magnifier_kaisha.jpg)
+
 这三个页面都走同一个 API 接口：
 
 ```
@@ -131,6 +139,16 @@ FAIRY 的 prompt 是这样定义的：
 - 影像档案：126 张剧情 / 活动壁纸（覆盖 2.3 ~ 2.7 版本）
 
 总计 **150+** 张高质量壁纸，零手动操作。
+
+随手挑几张影像档案里的剧情 CG 和活动壁纸：
+
+![2026年6月 - 月历壁纸](/images/wallpaper/calendar_202606.jpg)
+
+![2.5 剧情壁纸](/images/wallpaper/archive_25_1.jpg)
+
+![闪耀的此刻 - 影像档案](/images/wallpaper/archive_shining.jpg)
+
+![将眼泪与过往一同埋葬 - 影像档案](/images/wallpaper/archive_tears.jpg)
 
 ## 如果你想复刻
 
