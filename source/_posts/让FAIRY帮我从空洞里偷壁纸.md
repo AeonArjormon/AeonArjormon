@@ -144,3 +144,7 @@ FAIRY 的 prompt 是这样定义的：
 而让 AI Agent 来干这个活，最大的乐趣不是省了多少时间，而是每个月收到一条 FAIRY 风格的推送时，那种"空洞里真的有人在帮我盯着"的感觉。
 
 行至苦难处，正是修行时。但收壁纸这种事，不必苦修。
+
+---
+
+本文提到的 AI Agent 定时任务功能来自 QoderWork，如果你也想试试用 Agent 搞自动化，可以通过我的邀请链接注册：[https://qoder.com.cn/referral?referral_code=7hQLd8CPYZYSfw8mxKoEaHhI58twrlWt](https://qoder.com.cn/referral?referral_code=7hQLd8CPYZYSfw8mxKoEaHhI58twrlWt)
