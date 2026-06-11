@@ -181,6 +181,203 @@
         
 
 <div class="post">
+    <a href="/AeonArjormon/2026/06/11/%E6%88%91%E5%81%9A%E4%BA%86%E4%B8%80%E4%B8%AA%E9%82%A6%E5%B8%83%E8%AF%AD%E7%BF%BB%E8%AF%91%E5%99%A8/">
+        <h2 class="post-title">我做了一个邦布语翻译器，能把人话变成绝区零的邦布语</h2>
+    </a>
+    <div class="category-and-date">
+        
+        <span class="category">
+            <a href="/AeonArjormon/categories/%E6%B8%B8%E6%88%8F/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                游戏
+            </a>
+        </span>
+        
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2026/6/11
+        </span>
+        
+        
+    </div>
+    <div class="description">
+        <div class="content" v-pre>
+            
+            <p>在绝区零的世界里，邦布（Bangboo）是一种圆滚滚的辅助机器人，它们不说人话，只说”哇哒嗯呢”。</p>
+<p>听起来像乱叫？其实有规律。社区里早就有人总结了”邦布语大全 60 种”——二字组合、三字组合、四字组合，每种都有固定搭配。换句话说，邦布语是有语法的。</p>
+<p>那问题来了：<strong>能不能设计一套编码方案，把任意中文（甚至任意 Unicode 字符）翻译成合法的邦布语？</strong></p>
+<p>答案是：可以。而且我做了 Python 命令行 + Web 前端两个版本。</p>
+<h2 id="核心思路：2-bit-映射"><a href="#核心思路：2-bit-映射" class="headerlink" title="核心思路：2-bit 映射"></a>核心思路：2-bit 映射</h2><p>邦布语有 4 个基本音节——哇、哒、嗯、呢。4 个音节，刚好对应 2-bit 的 4 种状态：</p>
+<table>
+<thead>
+<tr>
+<th>音节</th>
+<th>二进制</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>哇</td>
+<td>00</td>
+<td>0</td>
+</tr>
+<tr>
+<td>哒</td>
+<td>01</td>
+<td>1</td>
+</tr>
+<tr>
+<td>嗯</td>
+<td>10</td>
+<td>2</td>
+</tr>
+<tr>
+<td>呢</td>
+<td>11</td>
+<td>3</td>
+</tr>
+</tbody></table>
+<p>一个 Unicode 字符占 16-bit，刚好可以拆成 8 个 2-bit 对，也就是 8 个邦布音节。这就是整套编码的核心——<strong>没有任何查表，不需要语料库，纯粹的数学映射</strong>。</p>
+<p>以”中”字为例（Unicode 码点 U+4E2D &#x3D; 0100 1110 0010 1101）：</p>
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>16-bit 二进制</td>
+<td>0100 1110 0010 1101</td>
+</tr>
+<tr>
+<td>拆成 8 个 2-bit</td>
+<td>01 &#x2F; 00 &#x2F; 11 &#x2F; 10 &#x2F; 00 &#x2F; 10 &#x2F; 11 &#x2F; 01</td>
+</tr>
+<tr>
+<td>映射成音节</td>
+<td>哒 &#x2F; 哇 &#x2F; 呢 &#x2F; 嗯 &#x2F; 哇 &#x2F; 嗯 &#x2F; 呢 &#x2F; 哒</td>
+</tr>
+<tr>
+<td>最终邦布语</td>
+<td>哒哇呢嗯哇嗯呢哒</td>
+</tr>
+</tbody></table>
+<p>解码就是逆过程：音节 → 2-bit → 拼回 16-bit → Unicode 字符。完美往返，零损失。</p>
+<h2 id="～压缩：让邦布语更像邦布语"><a href="#～压缩：让邦布语更像邦布语" class="headerlink" title="～压缩：让邦布语更像邦布语"></a>～压缩：让邦布语更像邦布语</h2><p>如果你仔细看游戏里的邦布语大全，会发现一个规律：<strong>合法的邦布语组合里不会出现连续相同的音节</strong>。嗯呢哇哒、哒嗯呢哇……都是交替出现的。</p>
+<p>但 2-bit 直接映射会产生连续重复。比如”啊”字（U+554A &#x3D; 0101 0101 0100 1010），拆出来是”哒哒哒哒哒哇嗯嗯”——前面连着 5 个哒，完全不像邦布说话。</p>
+<p>所以我引入了 <code>～</code> 作为压缩符：连续相同的音节只保留第一个，后续用 <code>～</code> 替代。</p>
+<table>
+<thead>
+<tr>
+<th>原始音节</th>
+<th>压缩结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>哒哒哒哒哒哇嗯嗯</td>
+<td>哒～～～～哇嗯～</td>
+</tr>
+</tbody></table>
+<p>这样一来，输出更符合邦布语”不连续重复”的特征。而且 <code>～</code> 本身也很”邦布”——想象一只邦布拖长了音调在叫，挺可爱的。</p>
+<p>解码时，<code>～</code> 会被展开为前一个音节，还原出完整的 8 音节序列后再转回 Unicode。</p>
+<h2 id="实际效果"><a href="#实际效果" class="headerlink" title="实际效果"></a>实际效果</h2><p>几个编码示例：</p>
+<table>
+<thead>
+<tr>
+<th>原文</th>
+<th>邦布语</th>
+<th>字符数</th>
+<th>～压缩</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>中</td>
+<td>哒哇呢嗯哇嗯呢哒</td>
+<td>8</td>
+<td>0 处</td>
+</tr>
+<tr>
+<td>啊</td>
+<td>哒～～～～哇嗯～</td>
+<td>8</td>
+<td>5 处</td>
+</tr>
+<tr>
+<td>你好</td>
+<td>哒哇呢～哒嗯哇～哒～嗯哒～呢～哒</td>
+<td>16</td>
+<td>5 处</td>
+</tr>
+<tr>
+<td>邦布语</td>
+<td>嗯哒哇～嗯～哒嗯哒～呢嗯哇～～呢嗯哇嗯呢～嗯呢哒</td>
+<td>24</td>
+<td>6 处</td>
+</tr>
+<tr>
+<td>天地玄黄</td>
+<td>哒～嗯哒哇嗯～哒～～～呢哇呢哇～哒呢哇呢嗯哇哒哇嗯哒呢嗯呢哇哒哇</td>
+<td>32</td>
+<td>6 处</td>
+</tr>
+</tbody></table>
+<p>一些有趣的观察：</p>
+<p><strong>ASCII 字符特别”话痨”。</strong> 英文字母的 Unicode 码点很小（比如 ‘H’ 是 U+0048），高位全是 0，映射出来就是一大串”哇”。”Hello” 五个字母编码后 40 个音节，其中 20 个被 <code>～</code> 压缩——看起来像邦布在疯狂点头。</p>
+<p><strong>中文反而很均匀。</strong> 常用中文字符分布在 U+4E00～U+9FFF 区间，高低位都有值，编码出来音节变化丰富，更接近游戏里邦布语的实际听感。</p>
+<p><strong>压缩率取决于文本特征。</strong> “啊啊啊啊”四个字完全相同，32 个音节压缩到 20 处 <code>～</code>；而”天地玄黄，宇宙洪荒”这种每个字都不同的句子，压缩率就低得多。</p>
+<h2 id="设计上的取舍"><a href="#设计上的取舍" class="headerlink" title="设计上的取舍"></a>设计上的取舍</h2><p><strong>为什么用 16-bit 定长而不是变长编码？</strong> 变长编码（比如 Huffman）可以让常见字更短，但需要额外的码表，解码也更复杂。16-bit 定长的好处是每个字固定 8 音节，编码解码完全对称，而且不需要任何外部依赖。对于”玩具级”的趣味编码来说，简洁比效率重要。</p>
+<p><strong>为什么 ～ 而不是其他压缩方式？</strong> Run-Length Encoding（游程编码）的经典形式是 “哒×5”，但这不像邦布会说的话。<code>～</code> 是一个在游戏文本里实际出现的符号（邦布拖长音），用它做压缩符既满足技术需求，又保持了”沉浸感”。</p>
+<p><strong>支持所有 Unicode 吗？</strong> 目前用 16-bit 截断，覆盖了基本多文种平面（BMP）的所有字符——包括中日韩、拉丁、希腊、阿拉伯文等绝大多数日常文字。emoji 和罕见古文字符在辅助平面，暂时不支持。</p>
+<h2 id="两个版本"><a href="#两个版本" class="headerlink" title="两个版本"></a>两个版本</h2><p><strong>Python CLI 版：</strong> 支持编码、解码、详情展示、批量 demo 和交互模式，适合命令行玩家。</p>
+<p><strong>Web 前端版：</strong> 赛博朋克风格界面，支持编码&#x2F;解码模式切换、逐字动画输出、编码详情表格和一键复制，适合分享给朋友玩。</p>
+<p>两个版本的核心算法完全一致，只是交互形态不同。如果你也想试试把消息翻译成邦布语发给朋友，或者解码朋友发来的”哇哒嗯呢”，可以在评论区告诉我，我考虑把 Web 版放出来。</p>
+
+            
+        </div>
+    </div>
+    <div class="post-tags">
+        
+        <span class="icon">
+            <i class="fa-solid fa-tags fa-fw"></i>
+        </span>
+        
+        
+        
+        <span class="tag">
+            
+            <a href="/AeonArjormon/tags/%E7%BB%9D%E5%8C%BA%E9%9B%B6/" style="color: #00bcd4">绝区零</a>
+        </span>
+        
+        <span class="tag">
+            
+            <a href="/AeonArjormon/tags/%E7%BC%96%E7%A8%8B/" style="color: #ff7d73">编程</a>
+        </span>
+        
+        <span class="tag">
+            
+            <a href="/AeonArjormon/tags/%E5%B7%A5%E5%85%B7/" style="color: #00bcd4">工具</a>
+        </span>
+        
+        <span class="tag">
+            
+            <a href="/AeonArjormon/tags/Python/" style="color: #ffa2c4">Python</a>
+        </span>
+        
+        <span class="tag">
+            
+            <a href="/AeonArjormon/tags/%E5%89%8D%E7%AB%AF/" style="color: #00a596">前端</a>
+        </span>
+        
+    </div>
+    <a href="/AeonArjormon/2026/06/11/%E6%88%91%E5%81%9A%E4%BA%86%E4%B8%80%E4%B8%AA%E9%82%A6%E5%B8%83%E8%AF%AD%E7%BF%BB%E8%AF%91%E5%99%A8/" class="go-post">阅读全文</a>
+</div>
+
+<div class="post">
     <a href="/AeonArjormon/2026/06/04/%E8%AE%A9FAIRY%E5%B8%AE%E6%88%91%E4%BB%8E%E7%A9%BA%E6%B4%9E%E9%87%8C%E5%81%B7%E5%A3%81%E7%BA%B8/">
         <h2 class="post-title">我让 FAIRY 从空洞里帮我偷壁纸，每月自动更新</h2>
     </a>
@@ -304,12 +501,17 @@
         
         <span class="tag">
             
-            <a href="/AeonArjormon/tags/%E7%BB%9D%E5%8C%BA%E9%9B%B6/" style="color: #ffa2c4">绝区零</a>
+            <a href="/AeonArjormon/tags/%E7%BB%9D%E5%8C%BA%E9%9B%B6/" style="color: #ff7d73">绝区零</a>
         </span>
         
         <span class="tag">
             
-            <a href="/AeonArjormon/tags/%E8%87%AA%E5%8A%A8%E5%8C%96/" style="color: #00bcd4">自动化</a>
+            <a href="/AeonArjormon/tags/Python/" style="color: #00bcd4">Python</a>
+        </span>
+        
+        <span class="tag">
+            
+            <a href="/AeonArjormon/tags/%E8%87%AA%E5%8A%A8%E5%8C%96/" style="color: #ff7d73">自动化</a>
         </span>
         
         <span class="tag">
@@ -319,12 +521,7 @@
         
         <span class="tag">
             
-            <a href="/AeonArjormon/tags/Python/" style="color: #ffa2c4">Python</a>
-        </span>
-        
-        <span class="tag">
-            
-            <a href="/AeonArjormon/tags/%E5%A3%81%E7%BA%B8/" style="color: #03a9f4">壁纸</a>
+            <a href="/AeonArjormon/tags/%E5%A3%81%E7%BA%B8/" style="color: #ffa2c4">壁纸</a>
         </span>
         
     </div>
