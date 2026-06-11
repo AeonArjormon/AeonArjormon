@@ -11,9 +11,12 @@ const app = Vue.createApp({
         };
     },
     created() {
-        window.addEventListener("load", () => {
+        const dismissLoading = () => {
             this.loading = false;
-        });
+        };
+        window.addEventListener("load", dismissLoading);
+        // Fallback: dismiss loading screen after 3s even if some resources are blocked
+        setTimeout(dismissLoading, 3000);
     },
     mounted() {
         window.addEventListener("scroll", this.handleScroll, true);
