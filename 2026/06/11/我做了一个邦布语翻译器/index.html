@@ -1,0 +1,364 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <title>我做了一个邦布语翻译器，能把人话变成绝区零的邦布语 | Aeon Arjormon</title>
+    <meta name="author" content="Aeon Arjormon" />
+    <meta name="description" content="Thank the flame for its light, but do not forget the lampholder standing in the shade with constancy of patience." />
+    <meta name="keywords" content="" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <link rel="icon" href="/AeonArjormon/images/cat.jpeg" />
+    <link rel="preconnect" href="https://s4.zstatic.net" />
+<script src="https://s4.zstatic.net/ajax/libs/vue/3.3.7/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.cn" />
+<link rel="preconnect" href="https://fonts.gstatic.cn" crossorigin />
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.cn/css2?family=Fira+Code:wght@400;500;600;700&family=Lexend:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap"
+/>
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.alicdn.com/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://s4.zstatic.net/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
+/>
+<script src="/AeonArjormon/js/lib/highlight.js"></script>
+
+
+
+<script src="/AeonArjormon/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/AeonArjormon/css/main.css" />
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+<body>
+    <div id="layout">
+        <transition name="fade">
+            <div id="loading" v-show="loading">
+                <div id="loading-circle">
+                    <h2>LOADING</h2>
+                    <p>加载过慢请开启缓存 浏览器默认开启</p>
+                    <img src="/AeonArjormon/images/loading.gif" />
+                </div>
+            </div>
+        </transition>
+        <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/AeonArjormon/">
+            <span>AEON ARJORMON</span>
+        </a>
+        
+        <a href="/AeonArjormon/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/AeonArjormon/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/AeonArjormon/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/AeonArjormon/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/AeonArjormon/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+        <a href="/AeonArjormon/bangbu">
+            <i class="fa-solid fa-language fa-fw"></i>
+            <span>&ensp;Bangbu</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;AEON ARJORMON</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/AeonArjormon/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/AeonArjormon/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/AeonArjormon/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/AeonArjormon/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/AeonArjormon/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+                <a href="/AeonArjormon/bangbu">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-language fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Bangbu</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+        <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+            <div class="article">
+    <div>
+        <h1>我做了一个邦布语翻译器，能把人话变成绝区零的邦布语</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2026/6/11
+        </span>
+        
+        <span class="category">
+            <a href="/AeonArjormon/categories/%E6%B8%B8%E6%88%8F/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                游戏
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/AeonArjormon/tags/%E7%BB%9D%E5%8C%BA%E9%9B%B6/" style="color: #00bcd4">
+                    绝区零
+                </a>
+            </span>
+            
+            <span class="tag">
+                
+                <a href="/AeonArjormon/tags/Python/" style="color: #03a9f4">
+                    Python
+                </a>
+            </span>
+            
+            <span class="tag">
+                
+                <a href="/AeonArjormon/tags/%E7%BC%96%E7%A8%8B/" style="color: #00a596">
+                    编程
+                </a>
+            </span>
+            
+            <span class="tag">
+                
+                <a href="/AeonArjormon/tags/%E5%B7%A5%E5%85%B7/" style="color: #ffa2c4">
+                    工具
+                </a>
+            </span>
+            
+            <span class="tag">
+                
+                <a href="/AeonArjormon/tags/%E5%89%8D%E7%AB%AF/" style="color: #00a596">
+                    前端
+                </a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <p>在绝区零的世界里，邦布（Bangboo）是一种圆滚滚的辅助机器人，它们不说人话，只说”哇哒嗯呢”。</p>
+<p>听起来像乱叫？其实有规律。社区里早就有人总结了”邦布语大全 60 种”——二字组合、三字组合、四字组合，每种都有固定搭配。换句话说，邦布语是有语法的。</p>
+<p>那问题来了：<strong>能不能设计一套编码方案，把任意中文（甚至任意 Unicode 字符）翻译成合法的邦布语？</strong></p>
+<p>答案是：可以。而且我做了一个可以在线用的翻译器。</p>
+<h2 id="编码方案：2-bit-映射"><a href="#编码方案：2-bit-映射" class="headerlink" title="编码方案：2-bit 映射"></a>编码方案：2-bit 映射</h2><p>核心思路很朴素：邦布语有 4 个基本音节——哇、哒、嗯、呢。4 个音节，刚好对应 2-bit 的 4 种状态：</p>
+<table>
+<thead>
+<tr>
+<th>音节</th>
+<th>二进制</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>哇</td>
+<td>00</td>
+<td>0</td>
+</tr>
+<tr>
+<td>哒</td>
+<td>01</td>
+<td>1</td>
+</tr>
+<tr>
+<td>嗯</td>
+<td>10</td>
+<td>2</td>
+</tr>
+<tr>
+<td>呢</td>
+<td>11</td>
+<td>3</td>
+</tr>
+</tbody></table>
+<p>一个 Unicode 字符（BMP 范围内）占 16-bit。16 位拆成 8 组 2-bit，每组映射一个音节。也就是说，<strong>每个字符固定编码为 8 个音节</strong>。</p>
+<p>以”中”字为例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;中&quot; = U+4E2D = 0100 1110 0010 1101</span><br><span class="line">分组:  01 00 11 10 00 10 11 01</span><br><span class="line">音节:  哒 哇 呢 嗯 哇 嗯 呢 哒</span><br></pre></td></tr></table></figure>
+
+<p>8 个音节，没有连续重复，直接输出。</p>
+<p>再看”啊”：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;啊&quot; = U+554A = 0101 0101 0100 1010</span><br><span class="line">分组:  01 01 01 01 01 00 10 10</span><br><span class="line">音节:  哒 哒 哒 哒 哒 哇 嗯 嗯</span><br></pre></td></tr></table></figure>
+
+<p>问题来了——连续 5 个”哒”。根据社区总结的邦布语规律，合法组合内不会出现连续相同的音节。那怎么办？</p>
+<h2 id="压缩：用-～-代替重复"><a href="#压缩：用-～-代替重复" class="headerlink" title="压缩：用 ～ 代替重复"></a>压缩：用 ～ 代替重复</h2><p>引入一个特殊符号 <code>～</code>，表示”和前一个音节相同”。连续 5 个”哒”变成：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">哒～～～～哇嗯～</span><br></pre></td></tr></table></figure>
+
+<p>这样既保留了信息（解码时展开即可），又避免了连续重复音节，让输出更像真实的邦布语。</p>
+<p>实际效果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;你好&quot;     → 哒呢哇哒嗯嗯哇哒 哒呢哇嗯哇哒嗯呢</span><br><span class="line">&quot;邦布语&quot;   → 哇哒嗯呢哒哇呢嗯 哇哒嗯呢哒哇哇哒 哒嗯哇哒呢嗯嗯哒</span><br><span class="line">&quot;Hello&quot;   → 哒哇哒嗯哇哒嗯呢 哒哇哒嗯哇哒嗯呢 哒嗯嗯嗯嗯呢哒嗯 哒嗯嗯嗯嗯呢哒嗯 哒嗯嗯嗯嗯呢哒呢</span><br></pre></td></tr></table></figure>
+
+<p>是的，英文、数字、emoji 都能编码——只要是 BMP 范围内的 Unicode 字符就行。</p>
+<h2 id="解码：逆向还原"><a href="#解码：逆向还原" class="headerlink" title="解码：逆向还原"></a>解码：逆向还原</h2><p>解码是编码的镜像操作：</p>
+<ol>
+<li>展开所有 <code>～</code>（复制前一个音节）</li>
+<li>每 8 个音节一组，还原成 8 个 2-bit 值</li>
+<li>拼接成 16-bit 码点，转回字符</li>
+</ol>
+<p>由于编码是确定性的（定长 16-bit），解码不需要任何额外信息，也不需要字典。只要音节数合法（是 8 的倍数），就能完美还原。</p>
+<h2 id="网页版：赛博朋克风翻译器"><a href="#网页版：赛博朋克风翻译器" class="headerlink" title="网页版：赛博朋克风翻译器"></a>网页版：赛博朋克风翻译器</h2><p>光有算法还不够，我给它做了一个完整的 Web 界面，风格参考了新艾利都的 H.D.D. 系统终端：</p>
+<ul>
+<li>深色背景 + 扫描线动画，模拟 CRT 显示器效果</li>
+<li>编码&#x2F;解码双模式切换</li>
+<li>字符逐个弹出的输出动画</li>
+<li>可选的编码详情面板，展示每个字符的码点、二进制和音节映射</li>
+<li>一键复制结果</li>
+</ul>
+<p><strong>可以直接在这里试试：</strong> <a href="/bangbu/">邦布语翻译器</a></p>
+<p>或者你也可以在命令行使用 Python 版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 编码</span></span><br><span class="line">python3 bangbu.py encode <span class="string">&quot;你好世界&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 解码</span></span><br><span class="line">python3 bangbu.py decode <span class="string">&quot;哒呢哇哒嗯嗯哇哒...&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看详细编码过程</span></span><br><span class="line">python3 bangbu.py detail <span class="string">&quot;邦布语&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 交互模式</span></span><br><span class="line">python3 bangbu.py interactive</span><br></pre></td></tr></table></figure>
+
+<h2 id="一些技术细节"><a href="#一些技术细节" class="headerlink" title="一些技术细节"></a>一些技术细节</h2><p><strong>为什么用 16-bit 定长而不是变长编码？</strong></p>
+<p>变长编码（比如 Huffman）可以让高频字符用更少的音节表示，理论上更紧凑。但变长编码需要维护码表，解码时需要前缀树，复杂度上升不少。而且邦布语本身就不是为了效率存在的——8 个音节一个字，读起来反而有种”邦布在一本正经地说话”的节奏感。</p>
+<p><strong>～ 压缩的有效性</strong></p>
+<p>对于中文，由于 Unicode 码点分布较散，连续相同 2-bit 对的概率不算高，压缩率有限。但对于 ASCII 字符（比如英文），高位都是 0，前几个 2-bit 对全是 <code>00</code>（哇），压缩效果就很好。比如 <code>aaaa</code> 四个相同的字母，会产生大量 <code>～</code>。</p>
+<p><strong>邦布语的”合法性”</strong></p>
+<p>社区总结的 60 种组合中，核心规律就是”不出现连续相同音节”。本编码通过 <code>～</code> 压缩完美规避了这个问题——输出的邦布语里，相邻的两个基本音节一定不同（如果有相同的，它们之间一定隔着一个 <code>～</code>）。</p>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>做这个翻译器的初衷纯粹是觉得好玩。绝区零的世界观细节做得很用心，连邦布的语言都有设计感。把它从一个”设定”变成一个真正能用的”编码器”，这种从虚构到现实的映射，本身就是一种乐趣。</p>
+<p>以后在评论区或者群聊里发一串”哇哒嗯呢”，懂的人自然会懂。(´・ω・&#96;)</p>
+
+    </div>
+    
+    
+    
+    
+    
+    
+    
+</div>
+
+            <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2024 - 2026 Aeon Arjormon
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;Aeon Arjormon
+        </div>
+        <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+        
+        <transition name="fade">
+            <div id="preview" ref="preview" v-show="previewShow">
+                <img id="preview-content" ref="previewContent" />
+            </div>
+        </transition>
+        
+    </div>
+    <script src="/AeonArjormon/js/main.js"></script>
+    
+    
+
+
+
+
+    
+</body>
+</html>
