@@ -161,10 +161,6 @@ menu:
         name: house
         theme: solid
         link: /
-    About:
-        name: id-card
-        theme: solid
-        link: /about
     Archives:
         name: box-archive
         theme: solid
@@ -177,6 +173,10 @@ menu:
         name: tags
         theme: solid
         link: /tags
+    About:
+        name: id-card
+        theme: solid
+        link: /about
 
 # Side info card
 card:

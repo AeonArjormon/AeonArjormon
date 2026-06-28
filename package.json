@@ -7,7 +7,7 @@
     "clean": "hexo clean",
     "deploy": "hexo deploy",
     "server": "hexo server",
-    "postinstall": "sed -i '' '/Argvchs:/d' node_modules/hexo-theme-particlex/_config.yml 2>/dev/null || true && sed -i '' 's/overflow: hidden;/overflow: auto;/' node_modules/hexo-theme-particlex/source/css/main.css 2>/dev/null || true"
+    "postinstall": "node scripts/patch-particlex.js"
   },
   "hexo": {
     "version": "8.1.2"
