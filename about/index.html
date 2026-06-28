@@ -179,23 +179,92 @@
 .about-resume-frame {
   display: block;
   width: 100%;
-  min-height: 1520px;
+  max-width: 100% !important;
+  height: min(820px, calc(100vh - 120px));
+  min-height: 620px;
+  max-height: 860px !important;
   border: 0;
-  border-radius: 10px;
+  border-radius: 8px;
   background: #f5f5f7;
 }
 
 @media (max-width: 768px) {
+  .article:has(.about-resume-shell) {
+    width: 100%;
+    padding: 0 10px;
+  }
+
+  .article:has(.about-resume-shell) .content {
+    margin: 16px 0 32px;
+  }
+
   .about-resume-frame {
-    min-height: 1780px;
+    height: calc(100vh - 96px);
+    min-height: 560px;
+    max-height: 760px !important;
     border-radius: 8px;
   }
 }
 </style>
 
 <div class="about-resume-shell">
-  <iframe class="about-resume-frame" src="/AeonArjormon/resume/" title="关于" loading="eager" scrolling="auto"></iframe>
+  <iframe id="about-resume-frame" class="about-resume-frame" src="/AeonArjormon/resume/" title="关于" loading="eager" scrolling="auto" style="display:block;width:100%;max-width:none;height:min(820px, calc(100vh - 120px));min-height:620px;max-height:860px;border:0;border-radius:8px;background:#f5f5f7;"></iframe>
 </div>
+
+<script>
+(() => {
+  const frame = document.getElementById("about-resume-frame");
+  if (!frame) return;
+
+  const shell = frame.closest(".about-resume-shell");
+  const content = frame.closest(".content");
+  const article = frame.closest(".article");
+  const title = article?.querySelector(":scope > div:first-child");
+  const info = article?.querySelector(":scope > .info");
+
+  if (article) {
+    article.style.width = "min(1180px, calc(100% - 40px))";
+    article.style.padding = "0";
+  }
+  if (content) {
+    content.style.margin = "24px 0 40px";
+  }
+  if (shell) {
+    shell.style.width = "100%";
+    shell.style.margin = "0";
+  }
+  if (title) title.style.display = "none";
+  if (info) info.style.display = "none";
+
+  Object.assign(frame.style, {
+    display: "block",
+    width: "100%",
+    maxWidth: "none",
+    height: "min(820px, calc(100vh - 120px))",
+    minHeight: "620px",
+    maxHeight: "860px",
+    border: "0",
+    borderRadius: "8px",
+    background: "#f5f5f7"
+  });
+
+  const fitViewport = () => {
+    if (window.matchMedia("(max-width: 768px)").matches) {
+      frame.style.height = "calc(100vh - 96px)";
+      frame.style.minHeight = "560px";
+      frame.style.maxHeight = "760px";
+    } else {
+      frame.style.height = "min(820px, calc(100vh - 120px))";
+      frame.style.minHeight = "620px";
+      frame.style.maxHeight = "860px";
+    }
+    frame.setAttribute("scrolling", "auto");
+  };
+
+  fitViewport();
+  window.addEventListener("resize", fitViewport);
+})();
+</script>
 
     </div>
     
