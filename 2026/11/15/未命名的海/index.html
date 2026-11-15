@@ -1,0 +1,277 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>未命名的海 | Aeon Arjormon</title>
+        <meta name="author" content="Aeon Arjormon" />
+        <meta name="description" content="Thank the flame for its light, but do not forget the lampholder standing in the shade with constancy of patience." />
+        <meta name="keywords" content="" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+        <link rel="icon" href="/AeonArjormon/images/cat.jpeg" />
+        <script src="https://cdn.staticfile.org/vue/3.2.45/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.1/css/all.min.css" />
+<link rel="stylesheet" href="/AeonArjormon/css/fonts.min.css" />
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://cdn.staticfile.org/highlight.js/11.7.0/highlight.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://cdn.staticfile.org/highlight.js/11.7.0/styles/github.min.css"
+/>
+<script src="/AeonArjormon/js/lib/highlight.js"></script>
+
+
+
+<script src="/AeonArjormon/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<script src="/AeonArjormon/js/lib/home.js"></script>
+
+<link rel="stylesheet" href="/AeonArjormon/css/main.css" />
+
+        <canvas id="fireworks" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 32767"></canvas>
+       <script src="https://cdn.staticfile.org/animejs/3.2.1/anime.min.js"></script>
+        <script src="/js/fireworks.min.js"></script>
+        <canvas id="background" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1"></canvas>
+      <script src="/js/background.min.js"></script>
+      <div id="cursor"></div>
+      <link rel="stylesheet" href="/css/cursor.min.css">
+      <script src="/js/cursor.min.js"></script>
+
+
+    <meta name="generator" content="Hexo 5.4.2"></head>
+    <body>
+        <div id="layout">
+            <transition name="fade">
+            <div id="loading" v-show="loading">
+                <div id="loading-circle">
+                    <h2>LOADING</h2>
+                    <p>加载过慢请开启缓存&ensp;浏览器默认开启</p>
+                    <img src="/AeonArjormon/images/loading.gif" />
+                </div>
+            </div>
+            </transition>
+            <transition name="into">
+            <div id="main" v-show="!loading">
+                <nav id="menu" ref="menu">
+    <div class="desktop-menu">
+        <a class="title" href="/AeonArjormon/">
+            <span>AEON ARJORMON</span>
+        </a>
+        
+        <a href="/AeonArjormon/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/AeonArjormon/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/AeonArjormon/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/AeonArjormon/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/AeonArjormon/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </div>
+    <div id="mobile-menu">
+        <div class="curtain" v-show="showMenu" @click="showMenu = !showMenu"></div>
+        <div class="title" @click="showMenu = !showMenu">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;AEON ARJORMON</span>
+        </div>
+        <transition name="slide">
+        <div class="items" v-show="showMenu">
+            
+            <a href="/AeonArjormon/">
+                <div class="item">
+                    <div style="min-width: 20px; max-width: 50px; width: 10%">
+                        <i class="fa-solid fa-house fa-fw"></i>
+                    </div>
+                    <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                </div>
+            </a>
+            
+            <a href="/AeonArjormon/about">
+                <div class="item">
+                    <div style="min-width: 20px; max-width: 50px; width: 10%">
+                        <i class="fa-solid fa-id-card fa-fw"></i>
+                    </div>
+                    <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                </div>
+            </a>
+            
+            <a href="/AeonArjormon/archives">
+                <div class="item">
+                    <div style="min-width: 20px; max-width: 50px; width: 10%">
+                        <i class="fa-solid fa-box-archive fa-fw"></i>
+                    </div>
+                    <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                </div>
+            </a>
+            
+            <a href="/AeonArjormon/categories">
+                <div class="item">
+                    <div style="min-width: 20px; max-width: 50px; width: 10%">
+                        <i class="fa-solid fa-bookmark fa-fw"></i>
+                    </div>
+                    <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                </div>
+            </a>
+            
+            <a href="/AeonArjormon/tags">
+                <div class="item">
+                    <div style="min-width: 20px; max-width: 50px; width: 10%">
+                        <i class="fa-solid fa-tags fa-fw"></i>
+                    </div>
+                    <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                </div>
+            </a>
+            
+        </div>
+        </transition>
+    </div>
+</nav>
+
+                <div class="article">
+    <div>
+        <h1>未命名的海</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2026/11/15
+        </span>
+        
+        <span class="category">
+            <a href="/AeonArjormon/categories/%E9%9A%8F%E7%AC%94/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                随笔
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            <span class="tag">
+                
+                <a href="/AeonArjormon/tags/%E6%89%8B%E5%86%99%E4%BF%A1/" style="color: #00a596">手写信</a>
+            </span>
+            
+            <span class="tag">
+                
+                <a href="/AeonArjormon/tags/%E6%9C%AA%E5%91%BD%E5%90%8D%E7%9A%84%E6%B5%B7/" style="color: #ffa2c4">未命名的海</a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <p><img src="/AeonArjormon/images/unnamed-sea-flowers.jpg" alt="白玫瑰、蓝玫瑰与雏菊"></p>
+<p align="center"><em>白玫瑰、蓝玫瑰、洋桔梗，和一小簇雏菊</em></p>
+
+<div style="margin: 1.8em 0 0.6em; padding: 18px clamp(16px, 3vw, 22px); background: linear-gradient(180deg, #eef4ff, #e7effd); border-left: 3px solid #9fb8e8; border-radius: 0 10px 10px 0; color: #3c5164; line-height: 2;">
+我太喜欢《卿卿日常》里的这段台词了：<br>“人长了嘴，就要把误会说清楚。生了耳，就要听旁人辩白。不要因为什么，又或者害怕面对而逃避问题，来回扯皮，浪费光阴。”
+</div>
+
+<p style="margin: 0 0 2.2em; text-align: right; color: #8b9aa8; font-size: 0.92em;">—— 是不是只有我一个人深陷其中……</p>
+
+<h2 style="margin: 2.4em 0 1em; font-size: 20px; font-weight: 600; letter-spacing: 0.25em; color: #3f6069;">其一</h2>
+
+<div style="margin: 1.6em 0 2.2em; padding: clamp(20px, 4vw, 30px); background: #fffefb; border: 1px solid #ece3d3; border-radius: 14px; box-shadow: 0 8px 24px rgba(120, 100, 60, 0.07); color: #33454c; font-size: 15px; line-height: 2.1;">
+<p style="margin: 0 0 1.1em; font-weight: 600; letter-spacing: 0.08em;">致米絮絮：</p>
+<p style="margin: 0 0 1.1em; text-indent: 2em;">在遇见你之前，我的生活像是一只走得很准的钟：起床，工作，吃饭，睡觉。后来认识了你，那一抹天空的蓝渲染了我的世界，自此连普通的空闲，也开始让我有了期待。</p>
+<p style="margin: 0; text-indent: 2em;">你闯进了我唯一的世界，变成了我世界的唯一；世界上的玫瑰不止一朵，盛开在这唯一世界的只有你一个。我平淡的固执也被打破，愿意为一个人去花时间，也愿意为一个人去做改变，因为喜欢就应该是一件轰轰烈烈的事。</p>
+</div>
+
+<h2 style="margin: 2.4em 0 1em; font-size: 20px; font-weight: 600; letter-spacing: 0.25em; color: #3f6069;">其二</h2>
+
+<div style="margin: 1.6em 0 2.2em; padding: clamp(24px, 4vw, 32px) 16px clamp(22px, 4vw, 28px); background: #edf5fa; border: 1px solid #dae8f1; border-radius: 14px; text-align: center; color: #33454c; font-size: 15px; line-height: 2.3;">
+<p style="display: inline-block; margin: 0 0 1.2em; padding-bottom: 8px; border-bottom: 1px dashed #c2d7e4; font-weight: 600; letter-spacing: 0.3em; color: #4f6f7c;">未命名的海</p>
+<p style="margin: 0; letter-spacing: 0.05em;">在蓝色浪花中有了方向<br>空洞的窗户<br>映射出生命的绿光<br>沉默的风学会了轻手轻脚<br>想你而走神的我在 时钟的哪一秒<br>黄昏把天空 调成了暖色<br>在一个普通的下午里 心却不普通<br>我问有多远，永远又太远<br>此刻左侧的心，逐渐偏向你<br>请收下这份心，更期待你的回应<br>哑巴的灵魂 也经历着风和潮汐<br>喜欢着你……</p>
+</div>
+
+<h2 style="margin: 2.4em 0 1em; font-size: 20px; font-weight: 600; letter-spacing: 0.25em; color: #3f6069;">写在后面</h2>
+
+<p style="margin: 2.4em 0 0.6em; padding-left: 10px; border-left: 2px solid #d5dde3; color: #98a6b0; font-size: 0.9em; letter-spacing: 0.12em;">一串神秘的代码</p>
+
+<div style="padding: 16px 18px; background: #f2f4f6; border-radius: 10px; color: #6b7b86; font-size: 0.92em; line-height: 2; word-break: break-all;">PS. 嗯哇～～嗯哒～嗯哒～嗯呢嗯哇哒呢哒嗯呢哒嗯呢哒～呢～～～哇～呢哇哒嗯哇嗯哇哒哇哒～～～～嗯哒呢哇哒嗯～呢哇嗯哇嗯哒哇呢～哒嗯哇～呢～～～哇～～哒</div>
+
+    </div>
+    
+    
+    
+    
+    
+    
+    
+</div>
+
+                <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2024 - 2026 Aeon Arjormon
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;Aeon Arjormon
+        </div>
+        <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/argvchs/hexo-theme-particlex">ParticleX Theme</a>
+        </div>
+        
+    </div>
+</footer>
+
+            </div>
+            </transition>
+            
+            <transition name="fade">
+            <div id="preview" ref="preview" v-show="previewShow">
+                <img id="preview-content" ref="previewContent" />
+            </div>
+            </transition>
+            
+        </div>
+        <script src="/AeonArjormon/js/main.js"></script>
+        
+        
+
+
+
+
+        
+    <script src="/AeonArjormon/js/petals.js" defer></script></body>
+</html>
