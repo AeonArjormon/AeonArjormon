@@ -11,8 +11,10 @@
   canvas.setAttribute("aria-hidden", "true");
   canvas.style.cssText =
     "position:fixed;top:0;left:0;width:100%;height:100%;" +
-    "pointer-events:none;z-index:4;opacity:.92;";
-  document.body.appendChild(canvas);
+    "pointer-events:none;z-index:1;opacity:.92;";
+  // 放进 #main 里，和菜单栏处于同一个层叠上下文，花瓣才不会盖住导航
+  var host = document.getElementById("main") || document.body;
+  host.insertBefore(canvas, host.firstChild);
 
   var ctx = canvas.getContext("2d");
   var width = 0;
@@ -73,8 +75,8 @@
     ctx.save();
     ctx.translate(p.x, p.y);
     ctx.rotate(p.rot);
-    // 翻面效果：横向压缩，模拟花瓣在空中打转
-    ctx.scale(0.28 + 0.72 * Math.abs(Math.cos(p.flip)), 1);
+    // 翻面效果：横向压缩，模拟花瓣在空中打转（保底 0.45，避免变成细条）
+    ctx.scale(0.45 + 0.55 * Math.abs(Math.cos(p.flip)), 1);
     ctx.globalAlpha = p.alpha;
 
     ctx.beginPath();
