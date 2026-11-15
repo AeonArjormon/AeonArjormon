@@ -9,7 +9,7 @@ description: "Thank the flame for its light, but do not forget the lampholder
 standing in the shade with constancy of patience."
 keywords:
 author: Aeon Arjormon
-language: en
+language: zh-CN
 timezone: ""
 
 # URL
@@ -42,7 +42,7 @@ external_link:
   exclude: ""
 filename_case: 0
 render_drafts: false
-post_asset_folder: ture
+post_asset_folder: true
 relative_link: false
 future: true
 highlight:
